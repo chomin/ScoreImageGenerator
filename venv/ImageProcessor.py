@@ -1,20 +1,25 @@
+import sys
+
+import BMSFactory5
+import Note
+import Pixel
+import PixelState
+import Point
 import cv2
 import numpy as np
-import Pixel, Note, Point, BMSFactory4, PixelState
+from Note import *
+from Pixel import *
 from PixelState import *
 from Point import *
-from Pixel import *
-from Note import *
-import sys
 
 
 class ImageProcessor:
-    FILE_NAME = "believe_in_my_existence(expert).png"
-    BPM = 117
+    FILE_NAME = "redo(expert).png"
+    BPM = 190
     LANE_NUM = 7
-    BAR_NUM = 44
+    BAR_NUM = 74
     BAR_NUM_PER_COLUMN: int = 8
-    COLUMN_NUM = 6
+    COLUMN_NUM = 10
 
     LANE_WIDTH: int = 20
     COLUMN_WIDTH = 220  # 間の空白含む
@@ -28,7 +33,7 @@ class ImageProcessor:
     @classmethod
     def process_score_image(cls):
 
-        bms_factory = BMSFactory4.BMSFactory()
+        bms_factory = BMSFactory5.BMSFactory()
 
         notes = [[], [], [], [], [], [], []]  # レーン別のノーツの情報
         is_usable = [True, True]  # 長押しをいくつ追跡しているかをカウントする。
