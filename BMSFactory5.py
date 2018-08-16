@@ -49,7 +49,7 @@ class BMSFactory:
         with open(self.FILE_NAME, mode='a') as f:   # 追記モードで開く
 
             # 曲の始まりを指定（現時点では適当）
-            f.write('\n#00101:00100000\n')
+            f.write('\n#00101:0000001000000000\n')
 
             start_indexes = [0, 0, 0, 0, 0, 0, 0]
             for bar in range(1, ip.ImageProcessor.BAR_NUM + 1):  # 小節ループ

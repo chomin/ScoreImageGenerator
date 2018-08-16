@@ -1,6 +1,6 @@
 import sys
 
-import BMSFactory5
+import BMSFactory6
 import Note
 import Pixel
 import PixelState
@@ -14,12 +14,12 @@ from Point import *
 
 
 class ImageProcessor:
-    FILE_NAME = "redo(expert).png"
-    BPM = 190
+    FILE_NAME = "kimija_nakya_damemitai(expert).png"
+    BPM = 131
     LANE_NUM = 7
-    BAR_NUM = 74
+    BAR_NUM = 53
     BAR_NUM_PER_COLUMN: int = 8
-    COLUMN_NUM = 10
+    COLUMN_NUM = 7
 
     LANE_WIDTH: int = 20
     COLUMN_WIDTH = 220  # 間の空白含む
@@ -33,7 +33,7 @@ class ImageProcessor:
     @classmethod
     def process_score_image(cls):
 
-        bms_factory = BMSFactory5.BMSFactory()
+        bms_factory = BMSFactory6.BMSFactory()
 
         notes = [[], [], [], [], [], [], []]  # レーン別のノーツの情報
         is_usable = [True, True]  # 長押しをいくつ追跡しているかをカウントする。
