@@ -6,14 +6,14 @@ from operator import attrgetter
 
 class BMSFactory:
 
-    MUSIC_NAME = 'Redo(expert)'
-    ARTIST = '鈴木このみ'
-    BPM = 190
-    PLAY_LEVEL: int = 27
+    MUSIC_NAME = 'GO!GO!MANIAC(expert)'
+    ARTIST = '放課後ティータイム'
+    BPM = 250
+    PLAY_LEVEL: int = 26
 
-    BAR_NUM = 74
+    BAR_NUM = 106
 
-    FILE_NAME = 'Redo(expert).bms'
+    FILE_NAME = 'GO!GO!MANIAC(expert).bms'
 
     def __init__(self):
 
@@ -49,10 +49,14 @@ class BMSFactory:
         with open(self.FILE_NAME, mode='a') as f:   # 追記モードで開く
 
             # 曲の始まりを指定（現時点では適当）
-            f.write('\n#00101:0000000000000000000000000000100000000000000000000000000000000000\n')
+            f.write('\n#00201:00100000000000000000000000000000\n')
 
             start_indexes = [0, 0, 0, 0, 0, 0, 0]
             for bar in range(1, ip.ImageProcessor.BAR_NUM + 1):  # 小節ループ
+
+                # if bar == 5:    # BPM変更
+                #     f.write('\n#00503:BA\n')
+
                 for lane_index in range(0, 7):  # レーンループ
                     lane_num = lane_index+1
 

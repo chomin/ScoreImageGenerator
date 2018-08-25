@@ -42,6 +42,10 @@ class Pixel:
         #     return True
         elif b == 37 and g == 75 and r == 13: # サビ
             return True
+        elif b == 140 and g == 178 and r == 140: # 小節境界線と繋がり緑中身
+            return True
+        elif b == 109 and g == 187 and r == 109: # 小節境界線と繋がり緑枠
+            return True
         else:
             return False
 
@@ -100,6 +104,8 @@ class Pixel:
         """
 
         bgr = [b, g, r]
+
+
 
         if max(bgr) == g and max(bgr) != b and max(bgr) != r:
             return True

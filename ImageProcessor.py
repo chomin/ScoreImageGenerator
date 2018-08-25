@@ -1,6 +1,6 @@
 import sys
 
-import BMSFactory7
+import BMSFactory10
 import Note
 import Pixel
 import PixelState
@@ -14,11 +14,10 @@ from Point import *
 
 
 class ImageProcessor:
-    FILE_NAME = "rokuchounento_ichiyamonogatari(expert).png"
+    FILE_NAME = "god_knows(expert).png"
     LANE_NUM = 7
-    BAR_NUM = 72
+    BAR_NUM = 79
     BAR_NUM_PER_COLUMN: int = 8
-    COLUMN_NUM = 79
 
     LANE_WIDTH: int = 20
     COLUMN_WIDTH = 220  # 間の空白含む
@@ -32,7 +31,7 @@ class ImageProcessor:
     @classmethod
     def process_score_image(cls):
 
-        bms_factory = BMSFactory7.BMSFactory()
+        bms_factory = BMSFactory10.BMSFactory()
 
         notes = [[], [], [], [], [], [], []]  # レーン別のノーツの情報
         is_usable = [True, True]  # 長押しをいくつ追跡しているかをカウントする。
@@ -221,13 +220,10 @@ class ImageProcessor:
                                 print("レーン, 小節:" + str(lane_index+1) + ", " + str(bar))
                                 sys.exit("エラー終了")
 
-                            if bar == 8:
-                                print("TapEnd@レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
-                                print(pos)
-                            # print("TapEnd@レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
                             lane_state.state = StateType.NONE
                             lane_state.from_pixel_index = pixel_offset
                             lane_state.following_long_num = 0
+                            lane_state.followable_direction = FollowableDirection.BOTH
 
                     elif lane_state.state == StateType.IN_FLICK:
 
@@ -273,6 +269,7 @@ class ImageProcessor:
                             lane_state.state = StateType.NONE
                             lane_state.from_pixel_index = pixel_offset
                             lane_state.following_long_num = 0
+                            lane_state.followable_direction = FollowableDirection.BOTH
 
                     elif lane_state.state == StateType.IN_MIDDLE:
 
@@ -294,12 +291,18 @@ class ImageProcessor:
                                 print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
                                     lane_start_point.x))
                                 print("レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
+
+                                tstr = "following_long_num: "
+                                for t in states:
+                                    tstr += str(t.following_long_num) + ", "
+                                print(tstr)
                                 sys.exit("エラー終了")
                                 # print("@lane_index:" + str(lane_index))
 
                             # print("Middle@レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
                             lane_state.state = StateType.NONE
                             lane_state.from_pixel_index = pixel_offset
+                            lane_state.followable_direction = FollowableDirection.BOTH
 
                     elif lane_state.state == StateType.IN_YELLOW:
                         if Pixel.is_yellow_frame(b, g, r):
@@ -358,35 +361,46 @@ class ImageProcessor:
                         if lane_state.state == StateType.NONE or lane_state.state == StateType.IN_START:
                             if lane_state.left_state == SubStateType.FOLLOWING_LONG:
                                 if not Pixel.is_following_color(lb, lg, lr):
-                                    if lane_state.right_state == SubStateType.FOLLOWING_LONG and not Pixel.is_following_color(rb, rg, rr):
-                                        print("両方！？")
-                                        print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
-                                            lane_start_point.x))
-                                        sys.exit("エラー終了")
-                                    else:
-                                        # print("@laneIndex:" + str(lane_index) + ", @bar:" + str(bar))
-                                        # print("@x:" + str(lane_start_point.x) + ", @y:" + str(lane_start_point.y - pixel_offset))
-                                        # print("state:" + str(lane_state.state))
-                                        # print("右(" + str(lane_index+1) + "→" + str(lane_index+2))
-                                        # print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
+                                    if lane_state.followable_direction != FollowableDirection.TO_LEFT:
+                                        if lane_state.right_state == SubStateType.FOLLOWING_LONG and not Pixel.is_following_color(rb, rg, rr):
+                                            print("両方！？")
+                                            print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
+                                                lane_start_point.x))
+                                            sys.exit("エラー終了")
+                                        else:
+                                            # print("@laneIndex:" + str(lane_index) + ", @bar:" + str(bar))
+                                            # print("@x:" + str(lane_start_point.x) + ", @y:" + str(lane_start_point.y - pixel_offset))
+                                            # print("state:" + str(lane_state.state))
+                                            # if bar == 6:
+                                            #     print("右(" + str(lane_index+1) + "→" + str(lane_index+2))
+                                            # print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
+                                            #     lane_start_point.x))
+                                            states[lane_index + 1].following_long_num = lane_state.following_long_num
+                                            states[lane_index + 1].followable_direction = FollowableDirection.TO_RIGHT
+                                            lane_state.followable_direction = FollowableDirection.BOTH
+
+                                            if lane_state.state == StateType.NONE:
+                                                lane_state.following_long_num = 0
+                                            else:
+                                                lane_state.will_stop_following = True
+
+                            if lane_state.right_state == SubStateType.FOLLOWING_LONG:
+                                if not Pixel.is_following_color(rb, rg, rr):
+                                    if lane_state.followable_direction != FollowableDirection.TO_RIGHT:
+                                        # print(lane_index)
+                                        # if bar == 6:
+                                        #     print("左(" + str(lane_index+1) + "→" + str(lane_index))
+                                        #     print(lane_state.followable_direction)
+                                        #     print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
                                         #     lane_start_point.x))
-                                        states[lane_index + 1].following_long_num = lane_state.following_long_num
+                                        states[lane_index - 1].following_long_num = lane_state.following_long_num
+                                        states[lane_index - 1].followable_direction = FollowableDirection.TO_LEFT
+                                        lane_state.followable_direction = FollowableDirection.BOTH
+
                                         if lane_state.state == StateType.NONE:
                                             lane_state.following_long_num = 0
                                         else:
                                             lane_state.will_stop_following = True
-
-                            if lane_state.right_state == SubStateType.FOLLOWING_LONG:
-                                if not Pixel.is_following_color(rb, rg, rr):
-                                    # print(lane_index)
-                                    # print("左(" + str(lane_index+1) + "→" + str(lane_index))
-                                    # print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
-                                    #     lane_start_point.x))
-                                    states[lane_index - 1].following_long_num = lane_state.following_long_num
-                                    if lane_state.state == StateType.NONE:
-                                        lane_state.following_long_num = 0
-                                    else:
-                                        lane_state.will_stop_following = True
 
                     if Pixel.is_following_color(lb, lg, lr):
                         lane_state.left_state = SubStateType.FOLLOWING_LONG
