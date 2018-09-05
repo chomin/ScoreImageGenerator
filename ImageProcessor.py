@@ -14,9 +14,9 @@ from Point import *
 
 
 class ImageProcessor:
-    FILE_NAME = "god_knows(expert).png"
+    FILE_NAME = "picotto_papitto_garupapico(expert).png"
     LANE_NUM = 7
-    BAR_NUM = 79
+    BAR_NUM = 88
     BAR_NUM_PER_COLUMN: int = 8
 
     LANE_WIDTH: int = 20

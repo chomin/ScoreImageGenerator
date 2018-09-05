@@ -6,14 +6,14 @@ from operator import attrgetter
 
 class BMSFactory:
 
-    MUSIC_NAME = 'God knows…(expert)'
-    ARTIST = 'Poppin\'Party'
-    BPM = 150
-    PLAY_LEVEL: int = 25
+    MUSIC_NAME = 'ピコっと！パピっと！ガルパ☆ピコ！！！(expert)'
+    ARTIST = '香澄×蘭×彩×友希那×こころ'
+    BPM = 190
+    PLAY_LEVEL: int = 26
 
-    BAR_NUM = 79
+    BAR_NUM = 88
 
-    FILE_NAME = 'God knows…(expert).bms'
+    FILE_NAME = 'ピコっと！パピっと！ガルパ☆ピコ！！！(expert).bms'
 
     def __init__(self):
 
