@@ -28,6 +28,7 @@ class Pixel:
     @classmethod
     def is_connecting_green(cls, b: int, g: int, r: int) -> bool:
         """
+        （startを識別するためのもの。）
         :return: 色が長押しの途中のものであればTrueを返す.
         :rtype: bool
         """
@@ -38,8 +39,12 @@ class Pixel:
             return True
         elif b == 37 and g == 51 and r == 13:
             return True
-        # elif b == 25 and g == 103 and r == 25:    # TapStartの中身。終点と認識されるのでだめ。
+        # elif b == 25 and g == 103 and r == 25:    # TapStartの中身 or つながり緑の枠。終点と認識されるのでだめ。
         #     return True
+        elif b == 31 and g == 128 and r == 31:
+            return True
+        elif b == 31 and g == 128 and r == 43:
+            return True
         elif b == 37 and g == 75 and r == 13: # サビ
             return True
         elif b == 140 and g == 178 and r == 140: # 小節境界線と繋がり緑中身
@@ -104,8 +109,6 @@ class Pixel:
         """
 
         bgr = [b, g, r]
-
-
 
         if max(bgr) == g and max(bgr) != b and max(bgr) != r:
             return True

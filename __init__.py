@@ -1,3 +1,3 @@
 import ImageProcessor
 
-ImageProcessor.ImageProcessor.process_score_image()
+ImageProcessor.ImageProcessor().process_score_image()

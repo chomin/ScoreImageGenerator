@@ -6,14 +6,14 @@ from operator import attrgetter
 
 class BMSFactory:
 
-    MUSIC_NAME = 'ピコっと！パピっと！ガルパ☆ピコ！！！(expert)'
-    ARTIST = '香澄×蘭×彩×友希那×こころ'
-    BPM = 190
-    PLAY_LEVEL: int = 26
+    MUSIC_NAME = 'す、好きなんかじゃない！(expert)'
+    ARTIST = '市ヶ谷有咲（伊藤彩沙）'
+    BPM = 166
+    PLAY_LEVEL: int = 25
 
-    BAR_NUM = 88
+    BAR_NUM = 66
 
-    FILE_NAME = 'ピコっと！パピっと！ガルパ☆ピコ！！！(expert).bms'
+    FILE_NAME = 'す、好きなんかじゃない！(expert).bms'
 
     def __init__(self):
 
@@ -25,6 +25,7 @@ class BMSFactory:
             f.write('#ARTIST ' + self.ARTIST + '\n')
             f.write('#BPM ' + str(self.BPM) + '\n')
             f.write('#PLAYLEVEL ' + str(self.PLAY_LEVEL) + '\n')
+            f.write('#GROUP BDGP\n')
 
             # f.write('\n#LNTYPE 1\n')
             # f.write('\n#WAV01 タップ.mp3\n')
@@ -54,8 +55,8 @@ class BMSFactory:
             start_indexes = [0, 0, 0, 0, 0, 0, 0]
             for bar in range(1, ip.ImageProcessor.BAR_NUM + 1):  # 小節ループ
 
-                # if bar == 5:    # BPM変更
-                #     f.write('\n#00503:BA\n')
+                # if bar == 25:    # BPM変更
+                #     f.write('\n#02503:C8\n')
 
                 for lane_index in range(0, 7):  # レーンループ
                     lane_num = lane_index+1
