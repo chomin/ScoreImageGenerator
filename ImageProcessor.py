@@ -1,6 +1,7 @@
 import sys
 
-import BMSFactory10
+# import BMSFactoryNormal
+import BMSFactoryTube
 import Note
 import Pixel
 import PixelState
@@ -14,9 +15,9 @@ from Point import *
 
 
 class ImageProcessor:
-    FILE_NAME = "su_sukinankajanai(expert).png"
+    FILE_NAME = "tsunagu_soramoyou(expert).png"
     LANE_NUM = 7
-    BAR_NUM = 66
+    BAR_NUM = 83
     BAR_NUM_PER_COLUMN: int = 8
 
     LANE_WIDTH: int = 20
@@ -73,7 +74,7 @@ class ImageProcessor:
 
         :rtype: object
         """
-        bms_factory = BMSFactory10.BMSFactory()
+        bms_factory = BMSFactoryTube.BMSFactory()
 
         notes = [[], [], [], [], [], [], []]  # レーン別のノーツの情報
         is_usable = [True, True]  # 長押しをいくつ追跡しているかをカウントする。
@@ -344,37 +345,37 @@ class ImageProcessor:
                                 notes[lane_index].append(Note(NoteType.MIDDLE2, pos, lane_index))
                             else:
                                 # 画像が間違っているので緊急措置
-                                if is_usable[0]:
-                                    lane_state.following_long_num = 1
-                                    is_usable[0] = False
-                                    notes[lane_index].append(Note(NoteType.START, pos, lane_index))
-                                elif is_usable[1]:
-                                    lane_state.following_long_num = 2
-                                    is_usable[1] = False
-                                    notes[lane_index].append(Note(NoteType.START2, pos, lane_index))
-                                else:
-                                    print("セマフォが0です")
-                                    tstr = "追跡状況："
-                                    for i in range(0, self.LANE_NUM):
-                                        tstr += str(self.states[i].following_long_num) + ", "
-                                    print(tstr)
-                                    print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
-                                        lane_start_point.x))
-                                    print("レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
-                                    sys.exit("エラー終了")
+                                # if is_usable[0]:
+                                #     lane_state.following_long_num = 1
+                                #     is_usable[0] = False
+                                #     notes[lane_index].append(Note(NoteType.START, pos, lane_index))
+                                # elif is_usable[1]:
+                                #     lane_state.following_long_num = 2
+                                #     is_usable[1] = False
+                                #     notes[lane_index].append(Note(NoteType.START2, pos, lane_index))
+                                # else:
+                                #     print("セマフォが0です")
+                                #     tstr = "追跡状況："
+                                #     for i in range(0, self.LANE_NUM):
+                                #         tstr += str(self.states[i].following_long_num) + ", "
+                                #     print(tstr)
+                                #     print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
+                                #         lane_start_point.x))
+                                #     print("レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
+                                #     sys.exit("エラー終了")
 
                                 # 緊急措置による退避
-                                # print("following_long_numが不正です.@middle:" + str(lane_state.following_long_num))
-                                # print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
-                                #     lane_start_point.x))
-                                # print("レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
-                                #
-                                # tstr = "following_long_num: "
-                                # for t in self.states:
-                                #     tstr += str(t.following_long_num) + ", "
-                                # print(tstr)
-                                # sys.exit("エラー終了")
-                                # print("@lane_index:" + str(lane_index))
+                                print("following_long_numが不正です.@middle:" + str(lane_state.following_long_num))
+                                print("座標(y,x):" + str(int(lane_start_point.y) - pixel_offset) + ", " + str(
+                                    lane_start_point.x))
+                                print("レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
+
+                                tstr = "following_long_num: "
+                                for t in self.states:
+                                    tstr += str(t.following_long_num) + ", "
+                                print(tstr)
+                                sys.exit("エラー終了")
+                                print("@lane_index:" + str(lane_index))
 
                             # print("Middle@レーン, 小節:" + str(lane_index + 1) + ", " + str(bar))
                             lane_state.state = StateType.NONE

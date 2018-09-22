@@ -6,14 +6,14 @@ from operator import attrgetter
 
 class BMSFactory:
 
-    MUSIC_NAME = 'す、好きなんかじゃない！(expert)'
-    ARTIST = '市ヶ谷有咲（伊藤彩沙）'
-    BPM = 166
+    MUSIC_NAME = 'SAKURAスキップ(expert)'
+    ARTIST = 'fourfolium'
+    BPM = 165
     PLAY_LEVEL: int = 25
 
-    BAR_NUM = 66
+    BAR_NUM = 71
 
-    FILE_NAME = 'す、好きなんかじゃない！(expert).bms'
+    FILE_NAME = 'SAKURAスキップ(expert).bms'
 
     def __init__(self):
 
@@ -50,7 +50,7 @@ class BMSFactory:
         with open(self.FILE_NAME, mode='a') as f:   # 追記モードで開く
 
             # 曲の始まりを指定（現時点では適当）
-            f.write('\n#00201:00001000000000000000000000000000\n')
+            f.write('\n#00401:10000000000000000000000000000000\n#00001:20000000000000000000000000000000\n')
 
             start_indexes = [0, 0, 0, 0, 0, 0, 0]
             for bar in range(1, ip.ImageProcessor.BAR_NUM + 1):  # 小節ループ
@@ -116,9 +116,9 @@ class BMSFactory:
                                 break
 
                     if lane_num < 6:
-                        row_str = '\n#' + '{0:03d}'.format(int(bar)) + '1' + str(lane_num) + ':'
+                        row_str = '\n#' + '{0:03d}'.format(int(bar+3)) + '1' + str(lane_num) + ':'
                     else:
-                        row_str = '\n#' + '{0:03d}'.format(int(bar)) + '1' + str(lane_num+2) + ':'
+                        row_str = '\n#' + '{0:03d}'.format(int(bar+3)) + '1' + str(lane_num+2) + ':'
                     writing_note_index = 0
 
 
